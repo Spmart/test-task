@@ -1,7 +1,7 @@
 package com.haulmont.testtask.entity;
 
 public class Author {
-    private long id;  //TODO: Id generator.
+    private long id;
     private String firstName;
     private String lastName;
     private String middleName;  //TODO: Define empty string here, if this arg is missed
@@ -19,9 +19,10 @@ public class Author {
     public Author(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.middleName = "";  //TODO: Like that?
     }
 
-    public long getId() {  //TODO: Check difference between Long and long
+    public long getId() {
         return id;
     }
 

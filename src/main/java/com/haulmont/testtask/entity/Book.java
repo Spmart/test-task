@@ -1,5 +1,6 @@
 package com.haulmont.testtask.entity;
 
+import java.time.Year;
 import java.util.Date;
 
 public class Book {
@@ -8,15 +9,15 @@ public class Book {
     private Author author;
     private Genre genre;
     private String publisher;  //TODO: Check type/define new class
-    private Date year;  //TODO: Check type. May be better define this as string
+    private Year year;  //TODO: Check type. May be better define this as string
     private String city;
 
-    public Book(long id, String name, Author author, Genre genre, String publisher, Date year, String city) {
+    public Book(long id, String name, Author author, Genre genre, String publisher, Year year, String city) {
         this(name, author, genre, publisher, year, city);
         this.id = id;
     }
 
-    public Book(String name, Author author, Genre genre, String publisher, Date year, String city) {
+    public Book(String name, Author author, Genre genre, String publisher, Year year, String city) {
         this.name = name;
         this.author = author;
         this.genre = genre;
@@ -65,11 +66,11 @@ public class Book {
         this.publisher = publisher;
     }
 
-    public Date getYear() {
+    public Year getYear() {
         return year;
     }
 
-    public void setYear(Date year) {
+    public void setYear(Year year) {
         this.year = year;
     }
 

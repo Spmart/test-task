@@ -6,17 +6,17 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class DbManagementUtil {
+public class DbBuilder {
     Connection connection = null;
 
     public static void main(String[] args) {
-        DbManagementUtil util = new DbManagementUtil();
-        util.getConnection();
-        util.createTables();
-        util.fillAuthorsTable();
-        util.fillGenresTable();
-        util.fillBooksTable();
-        util.closeConnection();
+        DbBuilder designer = new DbBuilder();
+        designer.getConnection();
+        designer.createTables();
+        designer.fillAuthorsTable();
+        designer.fillGenresTable();
+        designer.fillBooksTable();
+        designer.closeConnection();
     }
 
     private boolean getConnection() {  //TODO: Should I make "return false" in catch statement?
@@ -30,10 +30,10 @@ public class DbManagementUtil {
 
     private boolean closeConnection() {
         Statement statement;
-        final String sql = "SHUTDOWN";
+        final String query = "SHUTDOWN";
         try {
             statement = connection.createStatement();
-            statement.execute(sql);
+            statement.execute(query);
         } catch (SQLException e) {
             System.out.println("Failed to close connection! Error " + e.getErrorCode());
         }
@@ -119,14 +119,14 @@ public class DbManagementUtil {
     }
 
     private void fillBooksTable() {
-        final String FICTION_ID = "1";  //Not safe, but a little safer than magic numbers
-        final String ASTRONOMY_ID = "2";
-        final String COMPUTER_LITERATURE_ID = "3";
+        final String FICTION_ID = "0";  //Not safe, but a little safer than magic numbers
+        final String ASTRONOMY_ID = "1";
+        final String COMPUTER_LITERATURE_ID = "2";
 
-        final String SIMAK_ID = "1";
-        final String HARRISON_ID = "2";
-        final String CESEVICH_ID = "3";
-        final String KOMYAGIN_ID = "4";
+        final String SIMAK_ID = "0";
+        final String HARRISON_ID = "1";
+        final String CESEVICH_ID = "2";
+        final String KOMYAGIN_ID = "3";
 
         Statement statement;
         String query = "";
@@ -143,6 +143,7 @@ public class DbManagementUtil {
             statement.executeUpdate(query);
             query = "INSERT INTO books (name, author_id, genre_id, publisher, year, city) " +
                     "VALUES ('3DS STUDIO', "+ KOMYAGIN_ID + ", " + COMPUTER_LITERATURE_ID + ", 'Москва', '1992', 'Москва')";
+            statement.executeUpdate(query);
             System.out.println("Books table is filled.");
         } catch (SQLException e) {
             System.out.println("Can't add books! Error " + e.getErrorCode());
