@@ -14,7 +14,7 @@ public class MainUI extends UI {
     private TabSheet tabSheet = new TabSheet();
     private AuthorForm authorForm = new AuthorForm(this);
     private GenreForm genreForm = new GenreForm(this);
-    //private BookForm bookForm = new BookForm(this);
+    private BookForm bookForm = new BookForm(this);
 
     @Override
     protected void init(VaadinRequest request) {
@@ -30,16 +30,15 @@ public class MainUI extends UI {
         genresTab.setDefaultComponentAlignment(Alignment.TOP_CENTER);
         genresTab.addComponent(genreForm);
 
-        /*
+
         VerticalLayout booksTab = new VerticalLayout();
         booksTab.setDefaultComponentAlignment(Alignment.TOP_CENTER);
-        genresTab.addComponent(bookForm);
-        */
+        booksTab.addComponent(bookForm);
+
 
         tabSheet.addTab(authorsTab, "Авторы");
         tabSheet.addTab(genresTab, "Жанры");
-
-        //tabSheet.addTab(booksTab, "Книги");
+        tabSheet.addTab(booksTab, "Книги");
 
         layout.addComponent(tabSheet);
         setContent(layout);

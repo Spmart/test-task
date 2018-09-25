@@ -1,23 +1,20 @@
 package com.haulmont.testtask.entity;
 
-import java.time.Year;
-import java.util.Date;
-
 public class Book {
     private long id;
     private String name;
     private Author author;
     private Genre genre;
     private String publisher;  //TODO: Check type/define new class
-    private Year year;  //TODO: Check type. May be better define this as string
+    private short year;  //TODO: Check type. May be better define this as string
     private String city;
 
-    public Book(long id, String name, Author author, Genre genre, String publisher, Year year, String city) {
+    public Book(long id, String name, Author author, Genre genre, String publisher, short year, String city) {
         this(name, author, genre, publisher, year, city);
         this.id = id;
     }
 
-    public Book(String name, Author author, Genre genre, String publisher, Year year, String city) {
+    public Book(String name, Author author, Genre genre, String publisher, short year, String city) {
         this.name = name;
         this.author = author;
         this.genre = genre;
@@ -66,11 +63,11 @@ public class Book {
         this.publisher = publisher;
     }
 
-    public Year getYear() {
+    public short getYear() {
         return year;
     }
 
-    public void setYear(Year year) {
+    public void setYear(short year) {
         this.year = year;
     }
 

@@ -9,9 +9,9 @@ import com.vaadin.ui.themes.ValoTheme;
 
 public class GenreForm extends FormLayout {
 
-    private static final String GENRE_NAME_LABLE = "name";
+    private static final String GENRE_LABEL = "name";
 
-    private static final String GENRE_NAME_HEADER = "Жанр";
+    private static final String GENRE_HEADER = "Жанр";
 
     private MainUI mainUI;
     private GenreDAO genreDAO = new GenreDAO();
@@ -32,9 +32,9 @@ public class GenreForm extends FormLayout {
                 enableEditDeleteStatsButtons();
             }
         });
-        dataGrid.setSizeFull();
-        dataGrid.setColumns(GENRE_NAME_LABLE);
-        dataGrid.getColumn(GENRE_NAME_LABLE).setHeaderCaption(GENRE_NAME_HEADER);
+        //dataGrid.setSizeFull();
+        dataGrid.setColumns(GENRE_LABEL);
+        dataGrid.getColumn(GENRE_LABEL).setHeaderCaption(GENRE_HEADER);
 
         /* Setting up an add button */
         addButton.addClickListener(clickEvent -> {

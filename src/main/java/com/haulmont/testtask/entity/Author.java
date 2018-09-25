@@ -56,6 +56,8 @@ public class Author {
 
     @Override
     public String toString() {
-        return (lastName + " " + firstName + " " + middleName);
+        String fullName = (lastName + " " + firstName.substring(0, 1) + ". ");
+        if (middleName.equals("")) return fullName;
+        return (fullName + middleName.substring(0, 1) + ".");
     }
 }

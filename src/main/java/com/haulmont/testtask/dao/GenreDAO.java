@@ -21,7 +21,7 @@ public class GenreDAO implements DAO<Genre> {
     private static final String GET_GENRE_BY_ID_QUERY = "SELECT * FROM genres WHERE id = ?";
 
     private static final String ID_LABEL = "id";
-    private static final String GENRE_NAME_LABEL = "name";
+    private static final String GENRE_LABEL = "name";
 
     private static final Logger logger = LogManager.getLogger();
 
@@ -90,7 +90,7 @@ public class GenreDAO implements DAO<Genre> {
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 long id = resultSet.getLong(ID_LABEL);
-                String name = resultSet.getString(GENRE_NAME_LABEL);
+                String name = resultSet.getString(GENRE_LABEL);
                 list.add(new Genre(id, name));
             }
         } catch (SQLException e) {
@@ -111,7 +111,7 @@ public class GenreDAO implements DAO<Genre> {
             preparedStatement.setLong(1, id);
             resultSet = preparedStatement.executeQuery();
             resultSet.next();
-            String name = resultSet.getString(GENRE_NAME_LABEL);
+            String name = resultSet.getString(GENRE_LABEL);
             return new Genre(id, name);
         } catch (SQLException e) {
             logger.error(e);
