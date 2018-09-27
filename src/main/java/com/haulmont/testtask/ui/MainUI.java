@@ -10,6 +10,9 @@ import com.vaadin.ui.themes.ValoTheme;
 
 @Theme(ValoTheme.THEME_NAME)
 public class MainUI extends UI {
+    private static final String AUTHORS_TAB_CAPTION = "Авторы";
+    private static final String GENRES_TAB_CAPTION = "Жанры";
+    private static final String BOOKS_TAB_CAPTION = "Книги";
 
     private TabSheet tabSheet = new TabSheet();
     private AuthorForm authorForm = new AuthorForm(this);
@@ -36,9 +39,10 @@ public class MainUI extends UI {
         booksTab.addComponent(bookForm);
 
 
-        tabSheet.addTab(authorsTab, "Авторы");
-        tabSheet.addTab(genresTab, "Жанры");
-        tabSheet.addTab(booksTab, "Книги");
+        tabSheet.addTab(authorsTab, AUTHORS_TAB_CAPTION);
+        tabSheet.addTab(genresTab, GENRES_TAB_CAPTION);
+        tabSheet.addTab(booksTab, BOOKS_TAB_CAPTION);
+        tabSheet.addSelectedTabChangeListener(selectedTabChangeEvent -> bookForm.update());
 
         layout.addComponent(tabSheet);
         setContent(layout);

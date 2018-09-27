@@ -14,7 +14,7 @@ import java.util.List;
 
 public class GenreDAO implements DAO<Genre> {
 
-    private static final String UPDATE_GENRE_QUERY = "UPDATE genres SET name = ?, WHERE id = ?";
+    private static final String UPDATE_GENRE_QUERY = "UPDATE genres SET name = ? WHERE id = ?";
     private static final String ADD_GENRE_QUERY = "INSERT INTO genres (name) VALUES (?)";
     private static final String DELETE_GENRE_QUERY = "DELETE FROM genres WHERE id = ?";
     private static final String GET_ALL_GENRES_QUERY = "SELECT * FROM genres";
