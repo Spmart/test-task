@@ -24,7 +24,7 @@ public class BookModalWindow extends Window {
     private static final String INVALID_YEAR_MESSAGE = "Неправильно введен год. Корректные значения - от 0 до текущего.";
     private static final String INVALID_CITY_MESSAGE = "Название города должно содержать от 2 до 30 символов";
 
-    private static final List<String> publishersList = new LinkedList<>(Arrays.asList("Москва", "Питер", "O'Reilly"));
+    private static final List<String> publishersList = new LinkedList<>(Arrays.asList("Москва", "Питер", "O`Reilly"));
 
     private final TextField bookNameTextField = new TextField("Название");
     private final ComboBox authorNameComboBox = new ComboBox("Автор");

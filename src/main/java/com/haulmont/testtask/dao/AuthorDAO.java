@@ -19,7 +19,7 @@ public class AuthorDAO implements DAO<Author> {
     private static final String DELETE_AUTHOR_QUERY = "DELETE FROM authors WHERE id = ?";
     private static final String GET_ALL_AUTHORS_QUERY = "SELECT * FROM authors";
     private static final String GET_AUTHOR_BY_ID_QUERY = "SELECT * FROM authors WHERE id = ?";
-    private static final String GET_AUTHOR_ID_BY_LAST_NAME = "SELECT id FROM authors WHERE last_name = ?";  //TODO: Think about that
+    private static final String GET_AUTHOR_ID_BY_LAST_NAME = "SELECT id FROM authors WHERE last_name = '?'";  //TODO: Think about that
 
     private static final String ID_LABEL = "id";
     private static final String FIRST_NAME_LABEL = "first_name";
@@ -128,5 +128,26 @@ public class AuthorDAO implements DAO<Author> {
             logger.error(e);
         }
         return null;  //TODO: How to be safe with null?
+    }
+
+    public long getIdByLastName(String lastName) {
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+
+        String query = GET_AUTHOR_ID_BY_LAST_NAME;
+        query = query.replace("?", lastName);
+
+        try {
+            connection = ConnectionManager.getConnection();
+            preparedStatement = connection.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            resultSet.next();
+            return resultSet.getLong(ID_LABEL);
+        } catch (SQLException e) {
+            logger.error(e);
+        }
+        return 0;
     }
 }

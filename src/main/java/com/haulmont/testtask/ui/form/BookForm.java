@@ -1,12 +1,17 @@
 package com.haulmont.testtask.ui.form;
 
+import com.haulmont.testtask.dao.AuthorDAO;
 import com.haulmont.testtask.dao.BookDAO;
+import com.haulmont.testtask.entity.Author;
 import com.haulmont.testtask.entity.Book;
 import com.haulmont.testtask.ui.MainUI;
 import com.haulmont.testtask.ui.modalwindow.BookModalWindow;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+
+import java.util.*;
 
 public class BookForm extends FormLayout {
 
@@ -43,6 +48,8 @@ public class BookForm extends FormLayout {
         VerticalLayout mainLayout = new VerticalLayout();
         update();
 
+        CssLayout searchBar = getSearchBar();
+
         /* Setup a grid */
         dataGrid.addSelectionListener(selectionEvent -> {
             if (selectionEvent.getSelected() != null) {
@@ -63,7 +70,6 @@ public class BookForm extends FormLayout {
 
         /* Setting up an add button */
         addButton.addClickListener(clickEvent -> {
-            //TODO: Modal window for adding
             BookModalWindow modalWindow = new BookModalWindow(ADD_CAPTION);
             UI.getCurrent().addWindow(modalWindow);
             modalWindow.addCloseListener(closeEvent -> {
@@ -74,7 +80,6 @@ public class BookForm extends FormLayout {
 
         /* Setup an edit button */
         editButton.addClickListener(clickEvent -> {
-            //TODO: Modal window for editing
             Object selected = ((Grid.SingleSelectionModel) dataGrid.getSelectionModel()).getSelectedRow();
             if (selected != null) {
                 long id = (long) dataGrid.getContainerDataSource().getItem(selected).getItemProperty(ID_LABEL).getValue();
@@ -89,7 +94,6 @@ public class BookForm extends FormLayout {
 
         /* Setup a delete button */
         deleteButton.addClickListener(clickEvent -> {
-            //TODO: Query and error message
             Object selected = ((Grid.SingleSelectionModel) dataGrid.getSelectionModel()).getSelectedRow();
             if (selected != null) {
                 long id = (long) dataGrid.getContainerDataSource().getItem(selected).getItemProperty(ID_LABEL).getValue();
@@ -108,11 +112,75 @@ public class BookForm extends FormLayout {
         setSizeFull();
         CssLayout buttonsLayout = new CssLayout(addButton, editButton, deleteButton);
         buttonsLayout.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-        mainLayout.addComponents(dataGrid, buttonsLayout);
-        mainLayout.setComponentAlignment(dataGrid, Alignment.MIDDLE_CENTER);
+        mainLayout.addComponents(searchBar, dataGrid, buttonsLayout);
+        mainLayout.setComponentAlignment(buttonsLayout, Alignment.MIDDLE_CENTER);
+        mainLayout.setComponentAlignment(searchBar, Alignment.MIDDLE_CENTER);
         mainLayout.setComponentAlignment(buttonsLayout, Alignment.MIDDLE_CENTER);
         mainLayout.setSpacing(true);
         addComponents(mainLayout);
+    }
+
+    private CssLayout getSearchBar() {
+        final String BOOKNAME_INPUT_PROMPT = "Название";
+        final String AUTHOR_INPUT_PROMPT = "Автор";
+        final String PUBLISHER_INPUT_PROMPT = "Издатель";
+
+        final String DEFAULT_COMBO_BOX_ITEM = "default";
+
+        final List<String> publishersList = new LinkedList<>(Arrays.asList("Москва", "Питер", "O`Reilly"));
+
+        final Map<String, String> filter = new HashMap<>();
+
+        AuthorDAO authorDAO = new AuthorDAO();
+        BookDAO bookDAO = new BookDAO();  // ?
+
+        TextField filterByNameTextField = new TextField();
+        ComboBox filterByAuthorComboBox = new ComboBox();
+        ComboBox filterByPublisherComboBox = new ComboBox();
+        Button applyButton = new Button(FontAwesome.CHECK);
+        Button clearButton = new Button(FontAwesome.TIMES);
+
+        filterByNameTextField.setInputPrompt(BOOKNAME_INPUT_PROMPT);
+
+        filterByAuthorComboBox.setContainerDataSource(new BeanItemContainer<>(Author.class, authorDAO.getAll()));
+        filterByAuthorComboBox.setNullSelectionAllowed(true);
+        filterByAuthorComboBox.setNullSelectionItemId(DEFAULT_COMBO_BOX_ITEM);
+        filterByAuthorComboBox.setRequired(false);
+        filterByAuthorComboBox.setInputPrompt(AUTHOR_INPUT_PROMPT);
+
+        filterByPublisherComboBox.setContainerDataSource(new BeanItemContainer<>(String.class, publishersList));
+        filterByPublisherComboBox.setNullSelectionAllowed(true);
+        filterByPublisherComboBox.setNullSelectionItemId(DEFAULT_COMBO_BOX_ITEM);
+        filterByPublisherComboBox.setRequired(false);
+        filterByPublisherComboBox.setInputPrompt(PUBLISHER_INPUT_PROMPT);
+
+        applyButton.addClickListener(clickEvent -> {
+            filter.clear();
+            if (filterByNameTextField.getValue() != null && filterByNameTextField.getValue().length() > 0)
+                filter.put(BOOK_NAME_LABEL, filterByNameTextField.getValue());
+            if (filterByAuthorComboBox.getValue() != null) {
+                String value = filterByAuthorComboBox.getValue().toString();
+                value = value.split(" ")[0];
+                int i = 10;
+                filter.put(AUTHOR_NAME_LABEL, value);
+            }
+            if (filterByPublisherComboBox.getValue() != null) filter.put(PUBLISHER_LABEL, filterByPublisherComboBox.getValue().toString());
+
+            BeanItemContainer<Book> container = new BeanItemContainer<>(Book.class, bookDAO.getAll(filter));
+            dataGrid.setContainerDataSource(container);
+        });
+
+        clearButton.addClickListener(clickEvent -> {
+            update();
+            filterByNameTextField.clear();
+            filterByAuthorComboBox.select(DEFAULT_COMBO_BOX_ITEM);
+            filterByPublisherComboBox.select(DEFAULT_COMBO_BOX_ITEM);
+        });
+
+        CssLayout searchBar = new CssLayout(filterByNameTextField, filterByAuthorComboBox, filterByPublisherComboBox, clearButton, applyButton);
+        searchBar.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+
+        return searchBar;
     }
 
     public void update() {

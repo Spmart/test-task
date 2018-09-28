@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class BookDAO implements DAO<Book> {
 
@@ -24,13 +25,16 @@ public class BookDAO implements DAO<Book> {
     private static final String DELETE_BOOK_QUERY = "DELETE FROM books WHERE id = ?";
     private static final String GET_ALL_BOOKS_QUERY = "SELECT * FROM books";
     private static final String GET_BOOK_BY_ID_QUERY = "SELECT * FROM books WHERE id = ?";
-    private static final String FIND_BOOKS_BY_AUTHOR = " WHERE author_id = ?";
+    private static final String FIND_BOOKS_BY_AUTHOR = " WHERE author = '?'";
     private static final String FIND_BOOKS_BY_GENRE = " WHERE genre_id = ?";
+    private static final String FIND_BOOKS_BY_NAME = " WHERE name LIKE '%?%'";
+    private static final String FIND_BOOKS_BY_PUBLISHER = " WHERE publisher = '?'";
     private static final String GET_GENRE_STATS = "SELECT genre_id, COUNT(author_id) AS books_count FROM books GROUP BY genre_id";
 
     private static final String ID_LABEL = "id";
     private static final String BOOK_NAME_LABEL = "name";
     private static final String AUTHOR_ID_LABEL = "author_id";
+    private static final String AUTHOR_NAME_LABEL = "author";
     private static final String GENRE_ID_LABEL = "genre_id";
     private static final String PUBLISHER_LABEL = "publisher";
     private static final String YEAR_LABEL = "year";
@@ -118,7 +122,60 @@ public class BookDAO implements DAO<Book> {
                 long authorId = resultSet.getLong(AUTHOR_ID_LABEL);
                 long genreId = resultSet.getLong(GENRE_ID_LABEL);
                 String publisher = resultSet.getString(PUBLISHER_LABEL);
-                short year = resultSet.getShort(YEAR_LABEL);  //TODO: Maybe, getString?
+                short year = resultSet.getShort(YEAR_LABEL);
+                String city = resultSet.getString(CITY_LABEL);
+
+                Author author = new AuthorDAO().getById(authorId);
+                Genre genre = new GenreDAO().getById(genreId);
+                list.add(new Book(id, name, author, genre, publisher, year, city));
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+        }
+        return list;
+    }
+
+    public List<Book> getAll(Map<String, String> filter) {
+        Connection connection;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+        List<Book> list = new LinkedList<>();
+        String query = GET_ALL_BOOKS_QUERY;
+
+        //TODO: DON'T FORGET TO REMOVE THIS! IT'S HORRIBLE! (pls work)
+        if (filter.size() == 1) {
+            if (filter.containsKey(BOOK_NAME_LABEL) && filter.get(BOOK_NAME_LABEL).length() > 0) {
+                query += " WHERE name LIKE '%" + filter.get(BOOK_NAME_LABEL) + "%'";
+            } else if (filter.containsKey(AUTHOR_NAME_LABEL)) {
+                query += " WHERE author_id = " + new AuthorDAO().getIdByLastName(filter.get(AUTHOR_NAME_LABEL));
+            } else if (filter.containsKey(PUBLISHER_LABEL)) {
+                query += " WHERE publisher = '" + filter.get(PUBLISHER_LABEL) + "'";
+            }
+        } else if (filter.size() == 2) {
+            if (filter.containsKey(BOOK_NAME_LABEL) && filter.get(BOOK_NAME_LABEL).length() > 0 && filter.containsKey(AUTHOR_NAME_LABEL)) {
+                query += " WHERE name LIKE '%" + filter.get(BOOK_NAME_LABEL) + "%' AND author_id = '" + new AuthorDAO().getIdByLastName(filter.get(AUTHOR_NAME_LABEL)) + "'";
+            } else if (filter.containsKey(BOOK_NAME_LABEL) && filter.get(BOOK_NAME_LABEL).length() > 0 && filter.containsKey(PUBLISHER_LABEL)) {
+                query += " WHERE name LIKE '%" + filter.get(BOOK_NAME_LABEL) + "%' AND publisher = '" + filter.get(PUBLISHER_LABEL) + "'";
+            } else if (filter.containsKey(AUTHOR_NAME_LABEL) && filter.containsKey(PUBLISHER_LABEL)) {
+                query += " WHERE author_id = '" + new AuthorDAO().getIdByLastName(filter.get(AUTHOR_NAME_LABEL)) + "' AND publisher = '" + filter.get(PUBLISHER_LABEL) + "'";
+            }
+        } else if (filter.size() == 3) {
+            if (filter.containsKey(BOOK_NAME_LABEL) && filter.get(BOOK_NAME_LABEL).length() > 0 && filter.containsKey(AUTHOR_NAME_LABEL) && filter.containsKey(PUBLISHER_LABEL)) {
+                query += " WHERE name LIKE '%" + filter.get(BOOK_NAME_LABEL) + "%' AND author_id = '" + new AuthorDAO().getIdByLastName(filter.get(AUTHOR_NAME_LABEL)) + "' AND publisher = '" + filter.get(PUBLISHER_LABEL) + "'";
+            }
+        }
+
+        try {
+            connection = ConnectionManager.getConnection();
+            preparedStatement = connection.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                long id = resultSet.getLong(ID_LABEL);
+                String name = resultSet.getString(BOOK_NAME_LABEL);
+                long authorId = resultSet.getLong(AUTHOR_ID_LABEL);
+                long genreId = resultSet.getLong(GENRE_ID_LABEL);
+                String publisher = resultSet.getString(PUBLISHER_LABEL);
+                short year = resultSet.getShort(YEAR_LABEL);
                 String city = resultSet.getString(CITY_LABEL);
 
                 Author author = new AuthorDAO().getById(authorId);
