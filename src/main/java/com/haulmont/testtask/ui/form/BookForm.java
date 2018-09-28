@@ -132,7 +132,7 @@ public class BookForm extends FormLayout {
         final Map<String, String> filter = new HashMap<>();
 
         AuthorDAO authorDAO = new AuthorDAO();
-        BookDAO bookDAO = new BookDAO();  // ?
+        BookDAO bookDAO = new BookDAO();
 
         TextField filterByNameTextField = new TextField();
         ComboBox filterByAuthorComboBox = new ComboBox();

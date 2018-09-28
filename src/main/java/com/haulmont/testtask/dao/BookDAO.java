@@ -25,10 +25,6 @@ public class BookDAO implements DAO<Book> {
     private static final String DELETE_BOOK_QUERY = "DELETE FROM books WHERE id = ?";
     private static final String GET_ALL_BOOKS_QUERY = "SELECT * FROM books";
     private static final String GET_BOOK_BY_ID_QUERY = "SELECT * FROM books WHERE id = ?";
-    private static final String FIND_BOOKS_BY_AUTHOR = " WHERE author = '?'";
-    private static final String FIND_BOOKS_BY_GENRE = " WHERE genre_id = ?";
-    private static final String FIND_BOOKS_BY_NAME = " WHERE name LIKE '%?%'";
-    private static final String FIND_BOOKS_BY_PUBLISHER = " WHERE publisher = '?'";
     private static final String GET_GENRE_STATS = "SELECT genre_id, COUNT(author_id) AS books_count FROM books GROUP BY genre_id";
 
     private static final String ID_LABEL = "id";
@@ -142,7 +138,6 @@ public class BookDAO implements DAO<Book> {
         List<Book> list = new LinkedList<>();
         String query = GET_ALL_BOOKS_QUERY;
 
-        //TODO: DON'T FORGET TO REMOVE THIS! IT'S HORRIBLE! (pls work)
         if (filter.size() == 1) {
             if (filter.containsKey(BOOK_NAME_LABEL) && filter.get(BOOK_NAME_LABEL).length() > 0) {
                 query += " WHERE name LIKE '%" + filter.get(BOOK_NAME_LABEL) + "%'";
@@ -153,15 +148,19 @@ public class BookDAO implements DAO<Book> {
             }
         } else if (filter.size() == 2) {
             if (filter.containsKey(BOOK_NAME_LABEL) && filter.get(BOOK_NAME_LABEL).length() > 0 && filter.containsKey(AUTHOR_NAME_LABEL)) {
-                query += " WHERE name LIKE '%" + filter.get(BOOK_NAME_LABEL) + "%' AND author_id = '" + new AuthorDAO().getIdByLastName(filter.get(AUTHOR_NAME_LABEL)) + "'";
+                query += " WHERE name LIKE '%" + filter.get(BOOK_NAME_LABEL) + "%' AND author_id = '"
+                        + new AuthorDAO().getIdByLastName(filter.get(AUTHOR_NAME_LABEL)) + "'";
             } else if (filter.containsKey(BOOK_NAME_LABEL) && filter.get(BOOK_NAME_LABEL).length() > 0 && filter.containsKey(PUBLISHER_LABEL)) {
                 query += " WHERE name LIKE '%" + filter.get(BOOK_NAME_LABEL) + "%' AND publisher = '" + filter.get(PUBLISHER_LABEL) + "'";
             } else if (filter.containsKey(AUTHOR_NAME_LABEL) && filter.containsKey(PUBLISHER_LABEL)) {
-                query += " WHERE author_id = '" + new AuthorDAO().getIdByLastName(filter.get(AUTHOR_NAME_LABEL)) + "' AND publisher = '" + filter.get(PUBLISHER_LABEL) + "'";
+                query += " WHERE author_id = '" + new AuthorDAO().getIdByLastName(filter.get(AUTHOR_NAME_LABEL))
+                        + "' AND publisher = '" + filter.get(PUBLISHER_LABEL) + "'";
             }
         } else if (filter.size() == 3) {
-            if (filter.containsKey(BOOK_NAME_LABEL) && filter.get(BOOK_NAME_LABEL).length() > 0 && filter.containsKey(AUTHOR_NAME_LABEL) && filter.containsKey(PUBLISHER_LABEL)) {
-                query += " WHERE name LIKE '%" + filter.get(BOOK_NAME_LABEL) + "%' AND author_id = '" + new AuthorDAO().getIdByLastName(filter.get(AUTHOR_NAME_LABEL)) + "' AND publisher = '" + filter.get(PUBLISHER_LABEL) + "'";
+            if (filter.containsKey(BOOK_NAME_LABEL) && filter.get(BOOK_NAME_LABEL).length() > 0
+                    && filter.containsKey(AUTHOR_NAME_LABEL) && filter.containsKey(PUBLISHER_LABEL)) {
+                query += " WHERE name LIKE '%" + filter.get(BOOK_NAME_LABEL) + "%' AND author_id = '"
+                        + new AuthorDAO().getIdByLastName(filter.get(AUTHOR_NAME_LABEL)) + "' AND publisher = '" + filter.get(PUBLISHER_LABEL) + "'";
             }
         }
 

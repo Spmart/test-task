@@ -52,7 +52,7 @@ public class GenreDAO implements DAO<Genre> {
             connection = ConnectionManager.getConnection();
             preparedStatement = connection.prepareStatement(ADD_GENRE_QUERY);
             preparedStatement.setString(1, genre.getName());
-            preparedStatement.executeUpdate();  //TODO: Check, can I did this without statement in one line?
+            preparedStatement.executeUpdate();
             return true;
         } catch (SQLException e) {
             logger.error(e);
@@ -116,6 +116,6 @@ public class GenreDAO implements DAO<Genre> {
         } catch (SQLException e) {
             logger.error(e);
         }
-        return null;  //TODO: How to be safe with null?
+        return null;
     }
 }

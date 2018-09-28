@@ -5,8 +5,8 @@ public class Book {
     private String name;
     private Author author;
     private Genre genre;
-    private String publisher;  //TODO: Check type/define new class
-    private short year;  //TODO: Check type. May be better define this as string
+    private String publisher;
+    private short year;
     private String city;
 
     public Book(long id, String name, Author author, Genre genre, String publisher, short year, String city) {

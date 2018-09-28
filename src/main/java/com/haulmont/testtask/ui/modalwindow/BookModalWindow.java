@@ -7,6 +7,7 @@ import com.haulmont.testtask.entity.Author;
 import com.haulmont.testtask.entity.Book;
 import com.haulmont.testtask.entity.Genre;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.FontAwesome;
@@ -45,7 +46,7 @@ public class BookModalWindow extends Window {
                     bookNameTextField.getValue(),
                     (Author) authorNameComboBox.getValue(),
                     (Genre) genreComboBox.getValue(),
-                    (String) publisherComboBox.getValue(), //TODO: Require - shit or not
+                    (String) publisherComboBox.getValue(),
                     Short.valueOf(yearTextField.getValue()),
                     cityTextField.getValue()));
             if (isAdded) close();
@@ -59,7 +60,6 @@ public class BookModalWindow extends Window {
         setupModalWindow();
 
         bookNameTextField.setValue(book.getName());
-        //setValue()
         yearTextField.setValue(String.valueOf(book.getYear()));
         cityTextField.setValue(book.getCity());
 
@@ -70,7 +70,7 @@ public class BookModalWindow extends Window {
                     bookNameTextField.getValue(),
                     (Author) authorNameComboBox.getValue(),
                     (Genre) genreComboBox.getValue(),
-                    (String) publisherComboBox.getValue(), //TODO: Require - shit or not
+                    (String) publisherComboBox.getValue(),
                     Short.valueOf(yearTextField.getValue()),
                     cityTextField.getValue()));
             if (isUpdated) close();
@@ -114,7 +114,7 @@ public class BookModalWindow extends Window {
         yearTextField.setSizeFull();
         yearTextField.setRequired(true);
         yearTextField.setNullSettingAllowed(false);
-        yearTextField.addValidator(new StringLengthValidator(INVALID_YEAR_MESSAGE, 1, 4, false));  // TODO: Format validator
+        yearTextField.addValidator(new RegexpValidator("^\\d{4}$", INVALID_YEAR_MESSAGE));
         yearTextField.addValueChangeListener(valueChangeEvent -> checkInputValues());
 
         cityTextField.setSizeFull();

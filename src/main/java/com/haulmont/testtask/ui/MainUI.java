@@ -33,11 +33,9 @@ public class MainUI extends UI {
         genresTab.setDefaultComponentAlignment(Alignment.TOP_CENTER);
         genresTab.addComponent(genreForm);
 
-
         VerticalLayout booksTab = new VerticalLayout();
         booksTab.setDefaultComponentAlignment(Alignment.TOP_CENTER);
         booksTab.addComponent(bookForm);
-
 
         tabSheet.addTab(authorsTab, AUTHORS_TAB_CAPTION);
         tabSheet.addTab(genresTab, GENRES_TAB_CAPTION);

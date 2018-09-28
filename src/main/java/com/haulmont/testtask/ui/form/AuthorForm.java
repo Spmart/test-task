@@ -35,7 +35,7 @@ public class AuthorForm extends FormLayout {
     public AuthorForm(MainUI mainUI) {
         this.mainUI = mainUI;
         VerticalLayout mainLayout = new VerticalLayout();
-        update();  //SHOULD be there!
+        update();
 
         /* Setup a grid */
         dataGrid.addSelectionListener(selectionEvent -> {
@@ -43,7 +43,7 @@ public class AuthorForm extends FormLayout {
                 enableEditAndDeleteButtons();
             }
         });
-        //dataGrid.setSizeFull();
+
         dataGrid.setColumns(FIRST_NAME_LABEL, LAST_NAME_LABEL, MIDDLE_NAME_LABEL);
         dataGrid.getColumn(FIRST_NAME_LABEL).setHeaderCaption(FIRST_NAME_HEADER);
         dataGrid.getColumn(LAST_NAME_LABEL).setHeaderCaption(LAST_NAME_HEADER);
