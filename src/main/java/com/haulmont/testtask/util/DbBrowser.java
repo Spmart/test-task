@@ -14,7 +14,7 @@ public class DbBrowser {
         browser.closeConnection();
     }
 
-    private boolean getConnection() {  //TODO: Should I make "return false" in catch statement?
+    private boolean getConnection() {
         try {
             connection = ConnectionManager.getConnection();
         } catch (SQLException e) {

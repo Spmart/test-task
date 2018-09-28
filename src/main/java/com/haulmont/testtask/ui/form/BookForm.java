@@ -48,6 +48,7 @@ public class BookForm extends FormLayout {
         VerticalLayout mainLayout = new VerticalLayout();
         update();
 
+        /* Setup a search bar */
         CssLayout searchBar = getSearchBar();
 
         /* Setup a grid */

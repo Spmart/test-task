@@ -127,7 +127,7 @@ public class AuthorDAO implements DAO<Author> {
         } catch (SQLException e) {
             logger.error(e);
         }
-        return null;  //TODO: How to be safe with null?
+        return null;
     }
 
     public long getIdByLastName(String lastName) {

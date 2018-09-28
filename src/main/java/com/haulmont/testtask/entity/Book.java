@@ -1,6 +1,7 @@
 package com.haulmont.testtask.entity;
 
 public class Book {
+
     private long id;
     private String name;
     private Author author;

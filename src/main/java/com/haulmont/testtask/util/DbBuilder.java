@@ -19,7 +19,7 @@ public class DbBuilder {
         designer.closeConnection();
     }
 
-    private boolean getConnection() {  //TODO: Should I make "return false" in catch statement?
+    private boolean getConnection() {
         try {
             connection = ConnectionManager.getConnection();
         } catch (SQLException e) {
@@ -47,7 +47,7 @@ public class DbBuilder {
         try {
             statement = connection.createStatement();
 
-            query = "CREATE TABLE IF NOT EXISTS authors (\n" +
+            query = "CREATE TABLE authors (\n" +
                     "\tid BIGINT IDENTITY PRIMARY KEY,\n" +
                     "\tfirst_name VARCHAR(30) NOT NULL,\n" +
                     "\tlast_name VARCHAR(30) NOT NULL,\n" +
@@ -55,13 +55,13 @@ public class DbBuilder {
                     ")";
             statement.executeUpdate(query);
 
-            query = "CREATE TABLE IF NOT EXISTS genres (\n" +
+            query = "CREATE TABLE genres (\n" +
                     "\tid BIGINT IDENTITY PRIMARY KEY,\n" +
                     "\tname VARCHAR(50) NOT NULL\n" +
                     ")";
             statement.executeUpdate(query);
 
-            query = "CREATE TABLE IF NOT EXISTS books (\n" +
+            query = "CREATE TABLE books (\n" +
                     "\tid BIGINT IDENTITY PRIMARY KEY,\n" +
                     "\tname VARCHAR(100) NOT NULL,\n" +
                     "\tauthor_id BIGINT NOT NULL,\n" +

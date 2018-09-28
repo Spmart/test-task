@@ -138,30 +138,38 @@ public class BookDAO implements DAO<Book> {
         List<Book> list = new LinkedList<>();
         String query = GET_ALL_BOOKS_QUERY;
 
-        if (filter.size() == 1) {
-            if (filter.containsKey(BOOK_NAME_LABEL) && filter.get(BOOK_NAME_LABEL).length() > 0) {
-                query += " WHERE name LIKE '%" + filter.get(BOOK_NAME_LABEL) + "%'";
-            } else if (filter.containsKey(AUTHOR_NAME_LABEL)) {
-                query += " WHERE author_id = " + new AuthorDAO().getIdByLastName(filter.get(AUTHOR_NAME_LABEL));
-            } else if (filter.containsKey(PUBLISHER_LABEL)) {
-                query += " WHERE publisher = '" + filter.get(PUBLISHER_LABEL) + "'";
-            }
-        } else if (filter.size() == 2) {
-            if (filter.containsKey(BOOK_NAME_LABEL) && filter.get(BOOK_NAME_LABEL).length() > 0 && filter.containsKey(AUTHOR_NAME_LABEL)) {
-                query += " WHERE name LIKE '%" + filter.get(BOOK_NAME_LABEL) + "%' AND author_id = '"
-                        + new AuthorDAO().getIdByLastName(filter.get(AUTHOR_NAME_LABEL)) + "'";
-            } else if (filter.containsKey(BOOK_NAME_LABEL) && filter.get(BOOK_NAME_LABEL).length() > 0 && filter.containsKey(PUBLISHER_LABEL)) {
-                query += " WHERE name LIKE '%" + filter.get(BOOK_NAME_LABEL) + "%' AND publisher = '" + filter.get(PUBLISHER_LABEL) + "'";
-            } else if (filter.containsKey(AUTHOR_NAME_LABEL) && filter.containsKey(PUBLISHER_LABEL)) {
-                query += " WHERE author_id = '" + new AuthorDAO().getIdByLastName(filter.get(AUTHOR_NAME_LABEL))
-                        + "' AND publisher = '" + filter.get(PUBLISHER_LABEL) + "'";
-            }
-        } else if (filter.size() == 3) {
-            if (filter.containsKey(BOOK_NAME_LABEL) && filter.get(BOOK_NAME_LABEL).length() > 0
-                    && filter.containsKey(AUTHOR_NAME_LABEL) && filter.containsKey(PUBLISHER_LABEL)) {
-                query += " WHERE name LIKE '%" + filter.get(BOOK_NAME_LABEL) + "%' AND author_id = '"
-                        + new AuthorDAO().getIdByLastName(filter.get(AUTHOR_NAME_LABEL)) + "' AND publisher = '" + filter.get(PUBLISHER_LABEL) + "'";
-            }
+        switch (filter.size()) {
+            case 1:
+                if (filter.containsKey(BOOK_NAME_LABEL) && filter.get(BOOK_NAME_LABEL).length() > 0) {
+                    query += " WHERE name LIKE '%" + filter.get(BOOK_NAME_LABEL) + "%'";
+                } else if (filter.containsKey(AUTHOR_NAME_LABEL)) {
+                    query += " WHERE author_id = " + new AuthorDAO().getIdByLastName(filter.get(AUTHOR_NAME_LABEL));
+                } else if (filter.containsKey(PUBLISHER_LABEL)) {
+                    query += " WHERE publisher = '" + filter.get(PUBLISHER_LABEL) + "'";
+                }
+                break;
+            case 2:
+                if (filter.containsKey(BOOK_NAME_LABEL) && filter.get(BOOK_NAME_LABEL).length() > 0
+                        && filter.containsKey(AUTHOR_NAME_LABEL)) {
+                    query += " WHERE name LIKE '%" + filter.get(BOOK_NAME_LABEL) + "%' AND author_id = '"
+                            + new AuthorDAO().getIdByLastName(filter.get(AUTHOR_NAME_LABEL)) + "'";
+                } else if (filter.containsKey(BOOK_NAME_LABEL) && filter.get(BOOK_NAME_LABEL).length() > 0
+                        && filter.containsKey(PUBLISHER_LABEL)) {
+                    query += " WHERE name LIKE '%" + filter.get(BOOK_NAME_LABEL) + "%' AND publisher = '"
+                            + filter.get(PUBLISHER_LABEL) + "'";
+                } else if (filter.containsKey(AUTHOR_NAME_LABEL) && filter.containsKey(PUBLISHER_LABEL)) {
+                    query += " WHERE author_id = '" + new AuthorDAO().getIdByLastName(filter.get(AUTHOR_NAME_LABEL))
+                            + "' AND publisher = '" + filter.get(PUBLISHER_LABEL) + "'";
+                }
+                break;
+            case 3:
+                if (filter.containsKey(BOOK_NAME_LABEL) && filter.get(BOOK_NAME_LABEL).length() > 0
+                        && filter.containsKey(AUTHOR_NAME_LABEL) && filter.containsKey(PUBLISHER_LABEL)) {
+                    query += " WHERE name LIKE '%" + filter.get(BOOK_NAME_LABEL) + "%' AND author_id = '"
+                            + new AuthorDAO().getIdByLastName(filter.get(AUTHOR_NAME_LABEL)) + "' AND publisher = '"
+                            + filter.get(PUBLISHER_LABEL) + "'";
+                }
+                break;
         }
 
         try {

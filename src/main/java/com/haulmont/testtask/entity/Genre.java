@@ -1,6 +1,7 @@
 package com.haulmont.testtask.entity;
 
 public class Genre {
+
     private long id;
     private String name;
 
