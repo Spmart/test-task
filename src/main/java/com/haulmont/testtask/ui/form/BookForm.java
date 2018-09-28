@@ -38,10 +38,16 @@ public class BookForm extends FormLayout {
 
     private MainUI mainUI;
     private BookDAO bookDAO = new BookDAO();
+    private AuthorDAO authorDAO = new AuthorDAO();
     private Grid dataGrid = new Grid();
     private Button addButton = new Button(ADD_CAPTION);
     private Button editButton = new Button(EDIT_CAPTION);
     private Button deleteButton = new Button(DELETE_CAPTION);
+
+    private final List<String> publishersList = new LinkedList<>(Arrays.asList("Москва", "Питер", "O`Reilly"));
+    private TextField filterByNameTextField = new TextField();
+    private ComboBox filterByAuthorComboBox = new ComboBox();
+    private ComboBox filterByPublisherComboBox = new ComboBox();
 
     public BookForm(MainUI mainUI) {
         this.mainUI = mainUI;
@@ -49,7 +55,7 @@ public class BookForm extends FormLayout {
         update();
 
         /* Setup a search bar */
-        CssLayout searchBar = getSearchBar();
+        CssLayout searchBar = setupSearchBar();
 
         /* Setup a grid */
         dataGrid.addSelectionListener(selectionEvent -> {
@@ -121,23 +127,18 @@ public class BookForm extends FormLayout {
         addComponents(mainLayout);
     }
 
-    private CssLayout getSearchBar() {
+    private CssLayout setupSearchBar() {
         final String BOOKNAME_INPUT_PROMPT = "Название";
         final String AUTHOR_INPUT_PROMPT = "Автор";
         final String PUBLISHER_INPUT_PROMPT = "Издатель";
 
         final String DEFAULT_COMBO_BOX_ITEM = "default";
 
-        final List<String> publishersList = new LinkedList<>(Arrays.asList("Москва", "Питер", "O`Reilly"));
+
 
         final Map<String, String> filter = new HashMap<>();
 
-        AuthorDAO authorDAO = new AuthorDAO();
-        BookDAO bookDAO = new BookDAO();
 
-        TextField filterByNameTextField = new TextField();
-        ComboBox filterByAuthorComboBox = new ComboBox();
-        ComboBox filterByPublisherComboBox = new ComboBox();
         Button applyButton = new Button(FontAwesome.CHECK);
         Button clearButton = new Button(FontAwesome.TIMES);
 
@@ -187,6 +188,11 @@ public class BookForm extends FormLayout {
     public void update() {
         BeanItemContainer<Book> container = new BeanItemContainer<>(Book.class, bookDAO.getAll());
         dataGrid.setContainerDataSource(container);
+    }
+
+    public void updateSearchBar() {
+        filterByAuthorComboBox.setContainerDataSource(new BeanItemContainer<>(Author.class, authorDAO.getAll()));
+        filterByPublisherComboBox.setContainerDataSource(new BeanItemContainer<>(String.class, publishersList));
     }
 
     private void enableEditAndDeleteButtons() {

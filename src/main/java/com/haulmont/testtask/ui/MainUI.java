@@ -40,7 +40,10 @@ public class MainUI extends UI {
         tabSheet.addTab(authorsTab, AUTHORS_TAB_CAPTION);
         tabSheet.addTab(genresTab, GENRES_TAB_CAPTION);
         tabSheet.addTab(booksTab, BOOKS_TAB_CAPTION);
-        tabSheet.addSelectedTabChangeListener(selectedTabChangeEvent -> bookForm.update());
+        tabSheet.addSelectedTabChangeListener(selectedTabChangeEvent -> {
+            bookForm.update();
+            bookForm.updateSearchBar();
+        });
 
         layout.addComponent(tabSheet);
         setContent(layout);
