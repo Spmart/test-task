@@ -163,7 +163,6 @@ public class BookForm extends FormLayout {
             if (filterByAuthorComboBox.getValue() != null) {
                 String value = filterByAuthorComboBox.getValue().toString();
                 value = value.split(" ")[0];
-                int i = 10;
                 filter.put(AUTHOR_NAME_LABEL, value);
             }
             if (filterByPublisherComboBox.getValue() != null) filter.put(PUBLISHER_LABEL, filterByPublisherComboBox.getValue().toString());
