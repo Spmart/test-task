@@ -13,7 +13,11 @@ public class YearFieldValidator implements Validator {
         }
 
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-        if (Integer.valueOf((String) value) > currentYear) {
+        try {
+            if (Integer.valueOf((String) value) > currentYear) {
+                throw new InvalidValueException("Invalid value!");
+            }
+        } catch (NumberFormatException e) {
             throw new InvalidValueException("Invalid value!");
         }
     }
