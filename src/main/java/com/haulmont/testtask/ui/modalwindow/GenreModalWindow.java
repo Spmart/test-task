@@ -10,8 +10,6 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
-import org.apache.commons.lang3.StringUtils;
-
 public class GenreModalWindow extends Window {
 
     private static final String ADD_ERROR_MESSAGE = "Ошибка! Данные не добавлены.";
