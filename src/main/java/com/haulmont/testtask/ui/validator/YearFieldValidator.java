@@ -8,7 +8,7 @@ import java.util.Calendar;
 public class YearFieldValidator implements Validator {
     @Override
     public void validate(Object value) throws InvalidValueException {
-        if (!(value instanceof String && StringUtils.isNumeric(value.toString()))) {
+        if (!(value instanceof String || StringUtils.isNumeric(value.toString()))) {
             throw new InvalidValueException("Invalid value!");
         }
 

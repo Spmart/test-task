@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 public class TextFieldValidator implements Validator {
     @Override
     public void validate(Object value) throws InvalidValueException {
-        if (!(value instanceof String && StringUtils.isAlpha(value.toString()))) {
+        if (!(value instanceof String) || StringUtils.isWhitespace(value.toString()) || StringUtils.isNumeric(value.toString())) {
             throw new InvalidValueException("Invalid value!");
         }
     }
