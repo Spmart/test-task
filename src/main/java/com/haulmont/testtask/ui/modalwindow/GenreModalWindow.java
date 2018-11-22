@@ -2,11 +2,14 @@ package com.haulmont.testtask.ui.modalwindow;
 
 import com.haulmont.testtask.dao.GenreDAO;
 import com.haulmont.testtask.entity.Genre;
+import com.haulmont.testtask.ui.validator.TextFieldValidator;
 import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+
+import org.apache.commons.lang3.StringUtils;
 
 public class GenreModalWindow extends Window {
 
@@ -54,6 +57,7 @@ public class GenreModalWindow extends Window {
         genreTextField.setRequired(true);
         genreTextField.setNullSettingAllowed(false);
         genreTextField.addValidator(new StringLengthValidator(INVALID_STRING_MESSAGE, 2, 50, false));
+        genreTextField.addValidator(new TextFieldValidator());
         genreTextField.addValueChangeListener(valueChangeEvent -> checkInputValue());
 
         buttonsLayout.addComponents(okButton, cancelButton);
@@ -77,5 +81,6 @@ public class GenreModalWindow extends Window {
 
     private void checkInputValue() {
         if (genreTextField.isValid()) okButton.setEnabled(true);
+        else okButton.setEnabled(false);
     }
 }

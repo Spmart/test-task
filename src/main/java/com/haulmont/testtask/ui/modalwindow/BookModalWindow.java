@@ -6,6 +6,8 @@ import com.haulmont.testtask.dao.GenreDAO;
 import com.haulmont.testtask.entity.Author;
 import com.haulmont.testtask.entity.Book;
 import com.haulmont.testtask.entity.Genre;
+import com.haulmont.testtask.ui.validator.TextFieldValidator;
+import com.haulmont.testtask.ui.validator.YearFieldValidator;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.data.validator.StringLengthValidator;
@@ -91,6 +93,7 @@ public class BookModalWindow extends Window {
         bookNameTextField.setRequired(true);
         bookNameTextField.setNullSettingAllowed(false);
         bookNameTextField.addValidator(new StringLengthValidator(INVALID_BOOKNAME_MESSAGE, 1, 100, false));
+        bookNameTextField.addValidator(new TextFieldValidator());
         bookNameTextField.addValueChangeListener(valueChangeEvent -> checkInputValues());
 
         authorNameComboBox.setSizeFull();
@@ -115,12 +118,14 @@ public class BookModalWindow extends Window {
         yearTextField.setRequired(true);
         yearTextField.setNullSettingAllowed(false);
         yearTextField.addValidator(new RegexpValidator("^\\d{4}$", INVALID_YEAR_MESSAGE));
+        yearTextField.addValidator(new YearFieldValidator());
         yearTextField.addValueChangeListener(valueChangeEvent -> checkInputValues());
 
         cityTextField.setSizeFull();
         cityTextField.setRequired(true);
         cityTextField.setNullSettingAllowed(false);
         cityTextField.addValidator(new StringLengthValidator(INVALID_CITY_MESSAGE, 2, 30, false));
+        cityTextField.addValidator(new TextFieldValidator());
         cityTextField.addValueChangeListener(valueChangeEvent -> checkInputValues());
 
 
@@ -148,5 +153,6 @@ public class BookModalWindow extends Window {
         if (bookNameTextField.isValid() && yearTextField.isValid() && cityTextField.isValid() && cityTextField.isValid()) {
             okButton.setEnabled(true);
         }
+        else okButton.setEnabled(false);
     }
 }

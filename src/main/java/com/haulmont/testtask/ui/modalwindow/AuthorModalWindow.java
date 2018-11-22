@@ -2,6 +2,8 @@ package com.haulmont.testtask.ui.modalwindow;
 
 import com.haulmont.testtask.dao.AuthorDAO;
 import com.haulmont.testtask.entity.Author;
+import com.haulmont.testtask.ui.validator.MiddleNameFieldValidator;
+import com.haulmont.testtask.ui.validator.TextFieldValidator;
 import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.FontAwesome;
@@ -66,12 +68,14 @@ public class AuthorModalWindow extends Window {
         firstNameTextField.setRequired(true);
         firstNameTextField.setNullSettingAllowed(false);
         firstNameTextField.addValidator(new StringLengthValidator(INVALID_STRING_MESSAGE_1, 2, 30, false));
+        firstNameTextField.addValidator(new TextFieldValidator());
         firstNameTextField.addValueChangeListener(valueChangeEvent -> checkInputValues());
 
         lastNameTextField.setSizeFull();
         lastNameTextField.setRequired(true);
         lastNameTextField.setNullSettingAllowed(false);
         lastNameTextField.addValidator(new StringLengthValidator(INVALID_STRING_MESSAGE_1, 2, 30, false));
+        lastNameTextField.addValidator(new TextFieldValidator());
         lastNameTextField.addValueChangeListener(valueChangeEvent -> checkInputValues());
 
         middleNameTextField.setSizeFull();
@@ -79,6 +83,7 @@ public class AuthorModalWindow extends Window {
         middleNameTextField.setNullSettingAllowed(false);
         middleNameTextField.setValue("");
         middleNameTextField.addValidator(new StringLengthValidator(INVALID_STRING_MESSAGE_2, 0, 30, false));
+        middleNameTextField.addValidator(new MiddleNameFieldValidator());
         middleNameTextField.addValueChangeListener(valueChangeEvent -> checkInputValues());
 
         buttonsLayout.addComponents(okButton, cancelButton);
@@ -104,5 +109,6 @@ public class AuthorModalWindow extends Window {
         if (firstNameTextField.isValid() && lastNameTextField.isValid() && middleNameTextField.isValid()) {
             okButton.setEnabled(true);
         }
+        else okButton.setEnabled(false);
     }
 }
