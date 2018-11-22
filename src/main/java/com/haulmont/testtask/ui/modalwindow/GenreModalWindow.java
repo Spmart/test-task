@@ -3,6 +3,7 @@ package com.haulmont.testtask.ui.modalwindow;
 import com.haulmont.testtask.dao.GenreDAO;
 import com.haulmont.testtask.entity.Genre;
 import com.haulmont.testtask.ui.validator.TextFieldValidator;
+import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.FontAwesome;
@@ -15,6 +16,7 @@ public class GenreModalWindow extends Window {
 
     private static final String ADD_ERROR_MESSAGE = "Ошибка! Данные не добавлены.";
     private static final String INVALID_STRING_MESSAGE = "Введите от 2 до 50 символов.";
+    private static final String UNNECESSARY_SPACES_MESSAGE = "В начале и в конце поля не должно быть пробелов";
 
     private final TextField genreTextField = new TextField("Жанр");
     private final Button okButton = new Button(FontAwesome.CHECK);
@@ -57,6 +59,7 @@ public class GenreModalWindow extends Window {
         genreTextField.setRequired(true);
         genreTextField.setNullSettingAllowed(false);
         genreTextField.addValidator(new StringLengthValidator(INVALID_STRING_MESSAGE, 2, 50, false));
+        genreTextField.addValidator(new RegexpValidator("^[^\\s](.*)[^\\s]$", UNNECESSARY_SPACES_MESSAGE));
         genreTextField.addValidator(new TextFieldValidator());
         genreTextField.addValueChangeListener(valueChangeEvent -> checkInputValue());
 

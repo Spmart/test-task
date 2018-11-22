@@ -8,7 +8,7 @@ public class MiddleNameFieldValidator implements Validator {
     public void validate(Object value) throws Validator.InvalidValueException {
         if (!(value instanceof String) || (!value.toString().isEmpty()
                 && (StringUtils.isWhitespace(value.toString()) || !StringUtils.isAlpha(value.toString())))) {
-            throw new Validator.InvalidValueException("Invalid value!");
+            throw new Validator.InvalidValueException("Отчество должно состоять из букв или оставаться пустым");
         }
     }
 }

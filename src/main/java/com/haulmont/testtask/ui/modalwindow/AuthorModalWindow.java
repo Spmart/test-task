@@ -4,6 +4,7 @@ import com.haulmont.testtask.dao.AuthorDAO;
 import com.haulmont.testtask.entity.Author;
 import com.haulmont.testtask.ui.validator.MiddleNameFieldValidator;
 import com.haulmont.testtask.ui.validator.TextFieldValidator;
+import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.FontAwesome;
@@ -15,6 +16,7 @@ public class AuthorModalWindow extends Window {
     private static final String ADD_ERROR_MESSAGE = "Ошибка! Данные не добавлены.";
     private static final String INVALID_STRING_MESSAGE_1 = "Введите от 2 до 30 символов.";
     private static final String INVALID_STRING_MESSAGE_2 = "Введите не более 30 символов.";
+    private static final String UNNECESSARY_SPACES_MESSAGE = "В начале и в конце поля не должно быть пробелов";
 
     private final TextField firstNameTextField = new TextField("Имя");
     private final TextField lastNameTextField = new TextField("Фамилия");
@@ -68,6 +70,7 @@ public class AuthorModalWindow extends Window {
         firstNameTextField.setRequired(true);
         firstNameTextField.setNullSettingAllowed(false);
         firstNameTextField.addValidator(new StringLengthValidator(INVALID_STRING_MESSAGE_1, 2, 30, false));
+        firstNameTextField.addValidator(new RegexpValidator("^[^\\s](.*)[^\\s]$", UNNECESSARY_SPACES_MESSAGE));
         firstNameTextField.addValidator(new TextFieldValidator());
         firstNameTextField.addValueChangeListener(valueChangeEvent -> checkInputValues());
 
@@ -75,6 +78,7 @@ public class AuthorModalWindow extends Window {
         lastNameTextField.setRequired(true);
         lastNameTextField.setNullSettingAllowed(false);
         lastNameTextField.addValidator(new StringLengthValidator(INVALID_STRING_MESSAGE_1, 2, 30, false));
+        lastNameTextField.addValidator(new RegexpValidator("^[^\\s](.*)[^\\s]$", UNNECESSARY_SPACES_MESSAGE));
         lastNameTextField.addValidator(new TextFieldValidator());
         lastNameTextField.addValueChangeListener(valueChangeEvent -> checkInputValues());
 
@@ -83,6 +87,7 @@ public class AuthorModalWindow extends Window {
         middleNameTextField.setNullSettingAllowed(false);
         middleNameTextField.setValue("");
         middleNameTextField.addValidator(new StringLengthValidator(INVALID_STRING_MESSAGE_2, 0, 30, false));
+        middleNameTextField.addValidator(new RegexpValidator("^[^\\s](.*)[^\\s]$", UNNECESSARY_SPACES_MESSAGE));
         middleNameTextField.addValidator(new MiddleNameFieldValidator());
         middleNameTextField.addValueChangeListener(valueChangeEvent -> checkInputValues());
 

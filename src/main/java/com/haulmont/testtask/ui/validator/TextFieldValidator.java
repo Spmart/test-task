@@ -7,7 +7,7 @@ public class TextFieldValidator implements Validator {
     @Override
     public void validate(Object value) throws InvalidValueException {
         if (!(value instanceof String) || StringUtils.isWhitespace(value.toString()) || StringUtils.isNumeric(value.toString())) {
-            throw new InvalidValueException("Invalid value!");
+            throw new InvalidValueException("Поле не должно состоять только из цифр или пробелов");
         }
     }
 }

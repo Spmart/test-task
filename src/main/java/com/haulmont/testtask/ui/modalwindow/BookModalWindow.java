@@ -26,6 +26,7 @@ public class BookModalWindow extends Window {
     private static final String INVALID_BOOKNAME_MESSAGE = "Введите название от 1 до 100 символов.";
     private static final String INVALID_YEAR_MESSAGE = "Неправильно введен год. Корректные значения - от 0 до текущего.";
     private static final String INVALID_CITY_MESSAGE = "Название города должно содержать от 2 до 30 символов";
+    private static final String UNNECESSARY_SPACES_MESSAGE = "В начале и в конце поля не должно быть пробелов";
 
     private static final List<String> publishersList = new LinkedList<>(Arrays.asList("Москва", "Питер", "O`Reilly"));
 
@@ -94,6 +95,7 @@ public class BookModalWindow extends Window {
         bookNameTextField.setNullSettingAllowed(false);
         bookNameTextField.addValidator(new StringLengthValidator(INVALID_BOOKNAME_MESSAGE, 1, 100, false));
         bookNameTextField.addValidator(new TextFieldValidator());
+        bookNameTextField.addValidator(new RegexpValidator("^[^\\s](.*)[^\\s]$", UNNECESSARY_SPACES_MESSAGE));
         bookNameTextField.addValueChangeListener(valueChangeEvent -> checkInputValues());
 
         authorNameComboBox.setSizeFull();
@@ -117,7 +119,7 @@ public class BookModalWindow extends Window {
         yearTextField.setSizeFull();
         yearTextField.setRequired(true);
         yearTextField.setNullSettingAllowed(false);
-        yearTextField.addValidator(new RegexpValidator("^\\d{4}$", INVALID_YEAR_MESSAGE));
+        //yearTextField.addValidator(new RegexpValidator("^\\d{4}$", INVALID_YEAR_MESSAGE));
         yearTextField.addValidator(new YearFieldValidator());
         yearTextField.addValueChangeListener(valueChangeEvent -> checkInputValues());
 
@@ -126,6 +128,7 @@ public class BookModalWindow extends Window {
         cityTextField.setNullSettingAllowed(false);
         cityTextField.addValidator(new StringLengthValidator(INVALID_CITY_MESSAGE, 2, 30, false));
         cityTextField.addValidator(new TextFieldValidator());
+        cityTextField.addValidator(new RegexpValidator("^[^\\s](.*)[^\\s]$", UNNECESSARY_SPACES_MESSAGE));
         cityTextField.addValueChangeListener(valueChangeEvent -> checkInputValues());
 
 

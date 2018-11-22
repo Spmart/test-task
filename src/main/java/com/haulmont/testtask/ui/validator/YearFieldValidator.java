@@ -9,16 +9,16 @@ public class YearFieldValidator implements Validator {
     @Override
     public void validate(Object value) throws InvalidValueException {
         if (!(value instanceof String || StringUtils.isNumeric(value.toString()))) {
-            throw new InvalidValueException("Invalid value!");
+            throw new InvalidValueException("Год должен состоять только из цифр");
         }
 
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         try {
-            if (Integer.valueOf((String) value) > currentYear) {
-                throw new InvalidValueException("Invalid value!");
+            if (Integer.valueOf((String) value) < 0 || Integer.valueOf((String) value) > currentYear) {  //Year can't be from future
+                throw new InvalidValueException("Укажите год от нулевого до текущего");
             }
         } catch (NumberFormatException e) {
-            throw new InvalidValueException("Invalid value!");
+            throw new InvalidValueException("Год должен состоять только из цифр");
         }
     }
 }
