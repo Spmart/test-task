@@ -16,15 +16,12 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class BookModalWindow extends Window {
 
     private static final String ADD_ERROR_MESSAGE = "Ошибка! Данные не добавлены.";
     private static final String INVALID_BOOKNAME_MESSAGE = "Введите название от 1 до 100 символов.";
-    private static final String INVALID_YEAR_MESSAGE = "Неправильно введен год. Корректные значения - от 0 до текущего.";
     private static final String INVALID_CITY_MESSAGE = "Название города должно содержать от 2 до 30 символов";
     private static final String UNNECESSARY_SPACES_MESSAGE = "В начале и в конце поля не должно быть пробелов";
 
@@ -62,6 +59,13 @@ public class BookModalWindow extends Window {
         super(caption);
         setupModalWindow();
 
+        String authorName = book.getAuthor().toString();
+        String genre = book.getGenre().toString();
+        String publisher = book.getPublisher();
+        fillComboBox(authorNameComboBox, authorName);
+        fillComboBox(genreComboBox, genre);
+        fillComboBox(publisherComboBox, publisher);
+
         bookNameTextField.setValue(book.getName());
         yearTextField.setValue(String.valueOf(book.getYear()));
         cityTextField.setValue(book.getCity());
@@ -79,6 +83,18 @@ public class BookModalWindow extends Window {
             if (isUpdated) close();
             else Notification.show(ADD_ERROR_MESSAGE);
         });
+    }
+
+    private void fillComboBox(ComboBox comboBox, String itemName) {
+        Iterator<?> iterator = comboBox.getItemIds().iterator();
+        while (iterator.hasNext()) {
+            Object item = iterator.next();
+            String itemNameFromComboBox = item.toString();
+            if (itemName.equals(itemNameFromComboBox)) {
+                comboBox.select(item);
+                break;
+            }
+        }
     }
 
     private void setupModalWindow() {
@@ -119,7 +135,6 @@ public class BookModalWindow extends Window {
         yearTextField.setSizeFull();
         yearTextField.setRequired(true);
         yearTextField.setNullSettingAllowed(false);
-        //yearTextField.addValidator(new RegexpValidator("^\\d{4}$", INVALID_YEAR_MESSAGE));
         yearTextField.addValidator(new YearFieldValidator());
         yearTextField.addValueChangeListener(valueChangeEvent -> checkInputValues());
 
